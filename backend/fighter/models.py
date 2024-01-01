@@ -24,7 +24,10 @@ def create_random_7_digit_number():
 
 
 class CountryField(models.Model):
+    name = models.CharField(max_length=200)
     country = CountryField(blank_label='(select country)', null=True, default='US')
+    def __str__(self):
+        return self.country
 
 class WieghtClassFighter(models.Model):
     WEIGHT_CHOICES = (
@@ -49,7 +52,10 @@ class WieghtClassFighter(models.Model):
         ('ATOM', 'Atom'),
         ('OTHER', 'Other'),
     )
+    name = models.CharField(max_length=200)
     weight_class = models.CharField(max_length=20, choices=WEIGHT_CHOICES, verbose_name="weight class", default='LIGHT')
+    def __str__(self):
+        return self.name
     
 
 class GenderFighter(models.Model):
@@ -58,7 +64,10 @@ class GenderFighter(models.Model):
         ('F', 'Female'),
         ('O', 'Others'),
     )
+    name = models.CharField(max_length=200)
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES, verbose_name="fighter gender", default='M') 
+    def __str__(self):
+        return self.name
     
 
 class ChampionFighter(models.Model):
@@ -75,7 +84,10 @@ class ChampionFighter(models.Model):
         ('OTHER', 'Other'),
         ('NOT_HAVE', 'Not Have'),
     )
+    name = models.CharField(max_length=200)
     champion = models.CharField(max_length=20, choices=CHAMPION_CHOICES, verbose_name="Champion", default='UFC')
+    def __str__(self):
+        return self.name
 
 class SportFighter(models.Model):
     SPORT_C = (
@@ -90,7 +102,8 @@ class SportFighter(models.Model):
         ('KARATE', 'Karate'),
         ('OTHER', 'Other'),
     )
-    sport_fighter = models.CharField(max_length=100, choices=SPORT_C, verbose_name="sport", default='UFC')
+    name = models.CharField(max_length=200)
+    sport = models.CharField(max_length=100, choices=SPORT_C, verbose_name="sport", default='UFC')
     
         
 
@@ -313,8 +326,10 @@ class TitleFighter(models.Model):
         ('OTHER', 'other'),
        
     )
-
-    titles = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name="fighter titles", default='Not Have')
+    name = models.CharField(max_length=200)
+    title = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name="fighter titles", default='Not Have')
+    def __str__(self):
+        return self.name
   
 
 
@@ -339,23 +354,23 @@ class Fighter(models.Model):
     name = models.CharField(max_length=100, unique=True,  verbose_name="fighter name", default='Unknown')
     image = FilerImageField(on_delete=models.PROTECT,  verbose_name="fighter image")
     score = models.IntegerField( verbose_name="fighter score", default=0,)
-    weight_class = models.ForeignKey(WieghtClassFighter, max_length=20, related_name='fighter_weightclass',  verbose_name="weight class",  on_delete=models.CASCADE,)
+    weight_class_fighter = models.ForeignKey(WieghtClassFighter, max_length=20, related_name='fighter_weightclass',  verbose_name="fighter weight class",  on_delete=models.CASCADE,)
     height = models.CharField(max_length=20,blank=True,  verbose_name="height")
     weight = models.IntegerField( verbose_name="fighter weight", default=0, blank=True, null=True)
-    sport = models.ManyToManyField(SportFighter, max_length=100, related_name='fighter_sport', verbose_name="sport",  )
-    champion = models.ManyToManyField(ChampionFighter, max_length=20, related_name='fighter_champion', verbose_name="Champion",  )
+    sport_fighter = models.ManyToManyField(SportFighter, max_length=100, related_name='fighter_sport', verbose_name="Fighter Sport",  )
+    champion_fighter = models.ManyToManyField(ChampionFighter, max_length=20, related_name='fighter_champion', verbose_name="Fighter Champion",  )
     champion_des = models.CharField(max_length=20,  verbose_name="champion description", default='Unknown')
-    country = models.ForeignKey(CountryField, related_name='fighter_country', verbose_name="fighter country",  on_delete=models.CASCADE, blank=True)
+    country_fighter = models.ForeignKey(CountryField, related_name='fighter_country', verbose_name="fighter country",  on_delete=models.CASCADE, blank=True)
     nationality = models.ManyToManyField(CountryField, related_name='fighter_nationality', verbose_name="fighter country",blank=True )
     residence = models.ForeignKey(CountryField, related_name='fighter_residence',  verbose_name="residence country",  on_delete=models.CASCADE, blank=True)
-    titles = models.ManyToManyField(TitleFighter, verbose_name="fighter titles", blank=True, )
+    title_fighter = models.ManyToManyField(TitleFighter, verbose_name="fighter titles", blank=True, )
     bouts = models.IntegerField(blank=True, verbose_name="fighter bouts", default=0)
     rounds = models.IntegerField(blank=True, verbose_name="fighter rounds", default=0)
     wins = models.IntegerField(blank=True, verbose_name="fighter win", default=0)
     losses = models.IntegerField(blank=True, verbose_name="fighter losses", default=0)
     draws = models.IntegerField(blank=True, verbose_name="fighter draws", default=0)
     age = models.IntegerField(blank=True, verbose_name="fighter age", default=0)
-    gender = models.ForeignKey(GenderFighter, max_length=20, verbose_name="gender",  on_delete=models.CASCADE,)
+    gender_fighter = models.ForeignKey(GenderFighter, max_length=20, verbose_name="fighter gender",  on_delete=models.CASCADE,)
     star_rating = models.DecimalField(
         max_digits=2, 
         decimal_places=1, 
@@ -373,6 +388,20 @@ class Fighter(models.Model):
     
     def __str__ (self):
         return f'{self.id} - {self.fighter_uuids} - {self.name} - {self.ranking_score} - {self.star_rating}'
+    def title(self):
+        return self.title_fighter.title
+    def weight_class(self):
+        return self.weight_class_fighter.weight_class
+    def sport(self):
+        return self.sport_fighter.sport
+    def country_fighter_country(self):
+        return self.country_fighter.country
+    def nationality_country(self):
+        return self.nationality.country
+    def residence_country(self):
+        return self.residence.country
+    def gender(self):
+        return self.gender_fighter.gender
     
 
 
