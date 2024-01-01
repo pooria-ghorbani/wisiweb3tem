@@ -23,13 +23,15 @@ def create_random_7_digit_number():
     return random.randint(100, 9999999)  # Generate a random 5-digit number
 
 
-class CountryField(models.Model):
-    name = models.CharField(max_length=200)
-    country = CountryField(blank_label='(select country)', null=True, default='US')
-    def __str__(self):
-        return self.country
 
-class WieghtClassFighter(models.Model):
+class FighterManager(models.Model):
+    name = models.CharField(max_length=100, unique=True, null=True, verbose_name="fighter manager", default='Unknown')
+
+class FighterCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True, null=True, verbose_name="fighter category", default='Unknown')
+
+
+class Fighter(models.Model):
     WEIGHT_CHOICES = (
         ('SUPER_HEAVY', 'Super Heavy'),
         ('HEAVY', 'Heavy'),
@@ -52,25 +54,6 @@ class WieghtClassFighter(models.Model):
         ('ATOM', 'Atom'),
         ('OTHER', 'Other'),
     )
-    name = models.CharField(max_length=200)
-    weight_class = models.CharField(max_length=20, choices=WEIGHT_CHOICES, verbose_name="weight class", default='LIGHT')
-    def __str__(self):
-        return self.name
-    
-
-class GenderFighter(models.Model):
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Others'),
-    )
-    name = models.CharField(max_length=200)
-    gender = models.CharField(max_length=5, choices=GENDER_CHOICES, verbose_name="fighter gender", default='M') 
-    def __str__(self):
-        return self.name
-    
-
-class ChampionFighter(models.Model):
     CHAMPION_CHOICES = (
         ('UFC', 'UFC'),
         ('MMA', 'MMA'),
@@ -84,13 +67,7 @@ class ChampionFighter(models.Model):
         ('OTHER', 'Other'),
         ('NOT_HAVE', 'Not Have'),
     )
-    name = models.CharField(max_length=200)
-    champion = models.CharField(max_length=20, choices=CHAMPION_CHOICES, verbose_name="Champion", default='UFC')
-    def __str__(self):
-        return self.name
-
-class SportFighter(models.Model):
-    SPORT_C = (
+    SPORT_C= (
         ('UFC', 'UFC'),
         ('MMA', 'MMA'),
         ('KICKBOXING_PRO', 'Kickboxing Pro'),
@@ -102,12 +79,8 @@ class SportFighter(models.Model):
         ('KARATE', 'Karate'),
         ('OTHER', 'Other'),
     )
-    name = models.CharField(max_length=200)
-    sport = models.CharField(max_length=100, choices=SPORT_C, verbose_name="sport", default='UFC')
-    
-        
 
-class TitleFighter(models.Model):
+    
     TITLE_CHOICES = (
         ('NOT_HAVE', 'Not Have'),
         ('M  |UFC', 'M | UFC'),
@@ -326,57 +299,52 @@ class TitleFighter(models.Model):
         ('OTHER', 'other'),
        
     )
-    name = models.CharField(max_length=200)
-    title = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name="fighter titles", default='Not Have')
-    def __str__(self):
-        return self.name
-  
 
-
-
-
-
-
-
-
-
-class Fighter(models.Model):
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Others'),
+    )
+    
     
     attributes = AttributesField()
     #fighter_placeholder = PlaceholderField('placeholder_fighter')
     id = models.AutoField(primary_key=True)
+    fighter_uuids = models.UUIDField(default=uuid.uuid4, unique=True),
     fighters_id = models.PositiveIntegerField(unique=True,)
-    fighter_uuids = models.UUIDField(default=uuid.uuid4, unique=True,),
     is_active = models.BooleanField(default=True)
     is_crown = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+    fighter_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     career_years = models.CharField(max_length=9, null=True, blank=True, default='2023-2023')
-    name = models.CharField(max_length=100, unique=True,  verbose_name="fighter name", default='Unknown')
-    image = FilerImageField(on_delete=models.PROTECT,  verbose_name="fighter image")
-    score = models.IntegerField( verbose_name="fighter score", default=0,)
-    weight_class_fighter = models.ForeignKey(WieghtClassFighter, max_length=20, related_name='fighter_weightclass',  verbose_name="fighter weight class",  on_delete=models.CASCADE,)
-    height = models.CharField(max_length=20,blank=True,  verbose_name="height")
-    weight = models.IntegerField( verbose_name="fighter weight", default=0, blank=True, null=True)
-    sport_fighter = models.ManyToManyField(SportFighter, max_length=100, related_name='fighter_sport', verbose_name="Fighter Sport",  )
-    champion_fighter = models.ManyToManyField(ChampionFighter, max_length=20, related_name='fighter_champion', verbose_name="Fighter Champion",  )
-    champion_des = models.CharField(max_length=20,  verbose_name="champion description", default='Unknown')
-    country_fighter = models.ForeignKey(CountryField, related_name='fighter_country', verbose_name="fighter country",  on_delete=models.CASCADE, blank=True)
-    nationality = models.ManyToManyField(CountryField, related_name='fighter_nationality', verbose_name="fighter country",blank=True )
-    residence = models.ForeignKey(CountryField, related_name='fighter_residence',  verbose_name="residence country",  on_delete=models.CASCADE, blank=True)
-    title_fighter = models.ManyToManyField(TitleFighter, verbose_name="fighter titles", blank=True, )
+    name = models.CharField(max_length=100, unique=True, verbose_name="fighter name", default='Unknown')
+    image = FilerImageField(on_delete=models.PROTECT, verbose_name="fighter image")
+    score = models.IntegerField(verbose_name="fighter score", default=0,)
+    weight_class = models.CharField(max_length=20, choices=WEIGHT_CHOICES, verbose_name="weight class", default='LIGHT')
+    height = models.CharField(max_length=20,blank=True, verbose_name="height")
+    weight = models.IntegerField(verbose_name="fighter weight", default=0, blank=True, null=True)
+    sport = models.CharField(max_length=100, choices=SPORT_C, verbose_name="sport", default='UFC')
+    champion = models.CharField(max_length=20, choices=CHAMPION_CHOICES, verbose_name="Champion", default='UFC')
+    champion_des = models.CharField(max_length=20,verbose_name="champion description", default='Unknown')
+    country = CountryField(blank_label='(select country)', null=True, default='US')
+    nationality = CountryField(blank_label='(select country)', null=True, default='US')
+    residence = CountryField(blank_label='(select country)', null=True, default='US')
+    titles = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name="fighter titles", default='Not Have')
     bouts = models.IntegerField(blank=True, verbose_name="fighter bouts", default=0)
     rounds = models.IntegerField(blank=True, verbose_name="fighter rounds", default=0)
     wins = models.IntegerField(blank=True, verbose_name="fighter win", default=0)
     losses = models.IntegerField(blank=True, verbose_name="fighter losses", default=0)
     draws = models.IntegerField(blank=True, verbose_name="fighter draws", default=0)
+    gender = models.CharField(max_length=5, choices=GENDER_CHOICES, verbose_name="fighter gender", default='M')
     age = models.IntegerField(blank=True, verbose_name="fighter age", default=0)
-    gender_fighter = models.ForeignKey(GenderFighter, max_length=20, verbose_name="fighter gender",  on_delete=models.CASCADE,)
     star_rating = models.DecimalField(
         max_digits=2, 
         decimal_places=1, 
         validators=[MinValueValidator(Decimal('0.0')), MaxValueValidator(Decimal('5.0'))],
         default=Decimal('0.0')
     )
+    category = models.ForeignKey(FighterCategory, on_delete=models.CASCADE, null=True)
+    fighter_manager = models.ForeignKey(FighterManager, on_delete=models.CASCADE, null=True)
     #fighter_placeholder = models.ForeignKey(fighter_placeholder_slotname, on_delete=models.CASCADE, default='fighter')
     
     @property
@@ -388,20 +356,6 @@ class Fighter(models.Model):
     
     def __str__ (self):
         return f'{self.id} - {self.fighter_uuids} - {self.name} - {self.ranking_score} - {self.star_rating}'
-    def title(self):
-        return self.title_fighter.title
-    def weight_class(self):
-        return self.weight_class_fighter.weight_class
-    def sport(self):
-        return self.sport_fighter.sport
-    def country_fighter_country(self):
-        return self.country_fighter.country
-    def nationality_country(self):
-        return self.nationality.country
-    def residence_country(self):
-        return self.residence.country
-    def gender(self):
-        return self.gender_fighter.gender
     
 
 
@@ -421,18 +375,53 @@ class FighterDetailPluginModel(CMSPlugin):
 ############################
 """
 class FightCard(models.Model):
-    
-    
-    
+    SPORT_C = (
+        ('UFC', 'UFC'),
+        ('MMA', 'MMA'),
+        ('KICKBOXING_PRO', 'Kickboxing Pro'),
+        ('KICKBOXING_AMATEUR', 'Kickboxing Amateur'),
+        ('MUAY_THAI', 'Muay Thai'),
+        ('FREE_FIGHTING', 'Free Fighting'),
+        ('BOXING_PRO', 'Boxing Pro'),
+        ('BOXING_AMATEUR', 'Boxing Amateur'),
+        ('KARATE', 'Karate'),
+        ('OTHER', 'Other'),    
+    )
+    WEIGHT_CHOICES = (
+        ('SUPER_HEAVY', 'Super Heavy'),
+        ('HEAVY', 'Heavy'),
+        ('CRUISER', 'Cruiser'),
+        ('LIGHT_HEAVY', 'Light Heavy'),
+        ('SUPER_MIDDLE', 'Super Middle'),
+        ('MIDDLE', 'Middle'),
+        ('SUPER_WELTER', 'Super Welter'),
+        ('WELTER', 'Welter'),
+        ('SUPER_LIGHT', 'Super Light'),
+        ('LIGHT', 'Light'),
+        ('SUPER_FEATHER', 'Super Feather'),
+        ('FEATHER', 'Feather'),
+        ('SUPER_BANTAM', 'Super Bantam'),
+        ('BANTAM', 'Bantam'),
+        ('SUPER_FLY', 'Super Fly'),
+        ('FLY', 'Fly'),
+        ('LIGHT_FLY', 'Light Fly'),
+        ('MINIMUM', 'Minimum'),
+        ('ATOM', 'Atom'),
+        ('OTHER', 'Other'),
+    )
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
     attributes = AttributesField()
     fighter1 = models.ForeignKey(Fighter, on_delete=models.CASCADE, related_name='fighter1')
     fighter2 = models.ForeignKey(Fighter, on_delete=models.CASCADE, related_name='fighter2')
     fight_name = models.CharField(max_length=100,)
-    sport = models.ForeignKey(SportFighter, max_length=100, verbose_name="fight card sport", default='UFC', on_delete=models.CASCADE,)
-    weight_class = models.ForeignKey(WieghtClassFighter, max_length=20, verbose_name="fight card weight class", default='LIGHT', on_delete=models.CASCADE,)
-    gender = models.ForeignKey(GenderFighter, max_length=20, verbose_name="fight card gender", default='LIGHT', on_delete=models.CASCADE,)
+    sport = models.CharField(max_length=100, choices=SPORT_C, verbose_name="sport", default='UFC')
+    weight_class = models.CharField(max_length=20, choices=WEIGHT_CHOICES, verbose_name="weight class", default='LIGHT')
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, verbose_name="weight class", default='LIGHT')
     date_time = models.DateTimeField()
-    location = models.ForeignKey(CountryField, null=True, default='US', on_delete=models.CASCADE,)
+    location = CountryField(blank_label='(select country)', null=True, default='US')
     result = models.CharField(max_length=10, choices=[('W', 'Winner Fighter 1'), ('L', 'Winner Fighter 2'), ('D', 'Draw'),('N/A', 'Not Specified'),('C', 'Cancled')])
     def __str__(self):
         return f'{self.fighter1} - {self.fighter2} -  {self.date_time}'
@@ -699,8 +688,8 @@ class Event(models.Model):
        
     )
     attributes = AttributesField()
-    weight_class = models.ForeignKey(WieghtClassFighter, max_length=20, choices=WEIGHT_CHOICES, verbose_name="event weight class", on_delete=models.CASCADE,)
-    sport = models.ForeignKey(SportFighter, max_length=20, blank=True, verbose_name="event sport style", on_delete=models.CASCADE,)
+    weight_class = models.CharField(max_length=20, choices=WEIGHT_CHOICES, verbose_name="event weight class")
+    sport = models.CharField(max_length=20, blank=True,choices=CHAMPION_CHOICES, verbose_name="event sport style")
     sport_org = models.CharField(max_length=100, blank=True, choices=CHAMPION_CHOICES, verbose_name="event sport style")
     fight_card = models.ForeignKey(FightCard, on_delete=models.CASCADE, related_name='fightCard')
     match_name = models.CharField(max_length=50, blank=True, verbose_name="event name")
