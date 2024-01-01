@@ -350,6 +350,7 @@ ADMIN_REORDER = [
             'auth.Group',
         ],
     },
+    
     {
         'label': 'CMS',
         'app': 'cms',
@@ -363,6 +364,10 @@ ADMIN_REORDER = [
     {
         'label': 'Blog',
         'app': 'djangocms_blog',
+    },
+    {
+        'label': 'Fighters',
+        'app': 'backend_fighter',
     },
     {
         'label': 'System Administration',
