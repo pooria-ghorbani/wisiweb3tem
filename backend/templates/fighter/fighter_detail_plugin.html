@@ -1,0 +1,8 @@
+<!-- templates/fighter_detail_plugin.html -->
+{% if instance.fighter %}
+  <h1>{{ instance.fighter.name }}</h1>
+  <p>Weight Class: {{ instance.fighter.weight_class }}</p>
+  <!-- Add more fighter details here -->
+{% else %}
+  <p>No fighter selected.</p>
+{% endif %}

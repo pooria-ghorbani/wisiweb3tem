@@ -1,0 +1,12 @@
+{% block content %}
+  <h1>Fighters</h1>
+  <ul>
+    {% for fighter in fighters %}
+      <li>
+        <a href="{% url 'fighter_detail' fighter.id %}">{{ fighter.name }}</a>
+      </li>
+    {% empty %}
+      <li>No fighters available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

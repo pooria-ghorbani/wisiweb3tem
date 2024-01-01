@@ -71,6 +71,7 @@ INSTALLED_APPS = []
 installed_apps_overrides = [
     # for USERNAME_FIELD = 'email', before `cms` since it has a User model
     'backend.auth',
+    
 
     'backend.blog',
 
@@ -107,7 +108,7 @@ INSTALLED_APPS.extend([
     'menus',
     'treebeard',
     'sekizai',
-
+    'backend.fighter',
     'gtm',
     'solo',
     'rest_framework',
@@ -214,7 +215,7 @@ MIDDLEWARE = [
 DATABASE_URL = env.str('DATABASE_URL', default=f'sqlite:///{BASE_DIR}/db.sqlite')
 DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 
-
+SITE_ID = env.int('SITE_ID', default=1)
 AUTH_USER_MODEL = 'backend_auth.User'
 
 LOCALE_PATHS = [

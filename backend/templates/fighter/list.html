@@ -1,0 +1,16 @@
+<!-- templates/fighter_list.html -->
+{% extends "bootstrap5.html" %}
+
+{% block content %}
+  <h1>Fighters</h1>
+  <a href="{% url 'fighter_list' %}?{{ filters.urlencode }}">View Fighters</a>
+  <ul>
+    {% for fighter in fighters %}
+      <li>
+        <a href="{% url 'fighter_detail' fighter.id %}">{{ fighter.name }}</a>
+      </li>
+    {% empty %}
+      <li>No fighters available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

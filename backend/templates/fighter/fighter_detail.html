@@ -1,0 +1,12 @@
+<!-- templates/fighter_list.html -->
+{% extends "bootstrap5.html" %}
+
+{% block content %}
+  <h1>Fighter List</h1>
+  <ul>
+      <li>{{ fighter.name }}</li>
+    {% empty %}
+      <li>No fighters available.</li>
+
+  </ul>
+{% endblock %}

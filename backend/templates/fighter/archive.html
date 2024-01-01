@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block fighter_content %}
+<h1>Fighter</h1>
+{% if latest_fighter_list %}
+    <ul>
+    {% for fighter in latest_fighter_list %}
+        <li><a href="{% url 'backend.fighter:arshive_view'%}">{{ fighter.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No fighters are available.</p>
+{% endif %}
+{% endblock %}

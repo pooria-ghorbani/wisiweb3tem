@@ -19,6 +19,7 @@ urlpatterns = [
         path('', include('aldryn_sso.urls')),
     ] + i18n_patterns(
         path('', include('aldryn_sso.urls_i18n')),
+        path('fighter/', include('backend.fighter.urls'),  name='fighters'),
         path('', include('cms.urls')),
     )
 
