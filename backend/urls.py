@@ -15,11 +15,12 @@ urlpatterns = [
         path('taggit_autosuggest/', include('taggit_autosuggest.urls')),
         path('', include('link_all.api.urls')),
         path('filer/', include('filer.urls')),
+        path('fighter/', include('backend.fighter.urls'),  name='fighters'),
         path('admin/', admin.site.urls),
         path('', include('aldryn_sso.urls')),
     ] + i18n_patterns(
         path('', include('aldryn_sso.urls_i18n')),
-        path('fighter/', include('backend.fighter.urls'),  name='fighters'),
+        #path('fighter/', include('backend.fighter.urls'),  name='fighters'),
         path('', include('cms.urls')),
     )
 

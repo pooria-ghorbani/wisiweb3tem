@@ -71,6 +71,7 @@ INSTALLED_APPS = []
 installed_apps_overrides = [
     # for USERNAME_FIELD = 'email', before `cms` since it has a User model
     'backend.auth',
+    'backend.fighter',
     
 
     'backend.blog',
@@ -81,7 +82,7 @@ INSTALLED_APPS = installed_apps_overrides + INSTALLED_APPS
 
 INSTALLED_APPS.extend([
     ## BEWARE: any application added here will not show their models in django admin UNLESS you configure them below in the ADMIN_REORDER setting.
-
+    #'backend.fighter',
     # custom user
     'allauth',
     'allauth.account',
@@ -108,7 +109,7 @@ INSTALLED_APPS.extend([
     'menus',
     'treebeard',
     'sekizai',
-    'backend.fighter',
+    
     'gtm',
     'solo',
     'rest_framework',
@@ -351,6 +352,7 @@ ADMIN_REORDER = [
         ],
     },
     
+    
     {
         'label': 'CMS',
         'app': 'cms',
@@ -361,14 +363,12 @@ ADMIN_REORDER = [
             {'model': 'aldryn_forms.FormSubmission', 'label': 'Dynamic forms submissions'},
         ],
     },
+    {'app': 'fighter', 'label': 'Fighters'},
     {
         'label': 'Blog',
         'app': 'djangocms_blog',
     },
-    {
-        'label': 'Fighters',
-        'app': 'backend_fighter',
-    },
+    
     {
         'label': 'System Administration',
         'app': 'cms',
