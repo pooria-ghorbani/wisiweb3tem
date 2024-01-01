@@ -1,0 +1,49 @@
+{
+    "name": "frontend",
+    "version": "2.0.0",
+    "private": true,
+    "engines": {
+        "node": "^18"
+    },
+    "dependencies": {
+        "@babel/core": "^7.22.10",
+        "@fortawesome/fontawesome-free": "^6.4.2",
+        "@sentry/browser": "^7.64.0",
+        "@types/bootstrap": "^4.6.2",
+        "@types/jquery": "^3.5.16",
+        "@vue/cli": "^5.0.8",
+        "autoprefixer": "^10.4.15",
+        "bootstrap": "^4.6.2",
+        "css-loader": "^6.8.1",
+        "file-loader": "^6.2.0",
+        "image-webpack-loader": "^8.1.0",
+        "imagemin-gifsicle": "^7.0.0",
+        "jquery": "^3.7.0",
+        "mini-css-extract-plugin": "^2.7.6",
+        "node-sass": "^9.0.0",
+        "popper.js": "^1.0.0",
+        "postcss": "^8.4.28",
+        "postcss-loader": "^7.3.3",
+        "precss": "^4.0.0",
+        "sass-loader": "^13.3.2",
+        "style-loader": "^3.3.3",
+        "svg-url-loader": "^8.0.0",
+        "ts-loader": "^9.4.4",
+        "typescript": "^5.1.6",
+        "vue": "^3.3.4",
+        "vue-class-component": "^7.2.6",
+        "vue-loader": "^17.2.2",
+        "vue-property-decorator": "^9.1.2",
+        "vue-template-compiler": "^2.7.14",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1"
+    },
+    "scripts": {
+        "start": "webpack serve",
+        "serve": "webpack serve",
+        "webpack-dev-server": "yarn start",
+        "webpack-dev-server-in-docker": "NODE_ENV=docker /node_modules/.bin/webpack-dev-server --config webpack.config.js",
+        "build": "NODE_ENV=production /node_modules/.bin/webpack --config webpack.config.js"
+    }
+}

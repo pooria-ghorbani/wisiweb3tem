@@ -1,0 +1,26 @@
+// djangocms-picture allows the editor to set image alignment
+// it generates a class on the img tag like: align-left, align-center, align-right
+// this means nothing in bootstrap4
+// https://github.com/divio/djangocms-picture/blob/master/djangocms_picture/cms_plugins.py#L62
+
+
+// djangocms-picture has no encapsulation tag, so we have to make this global :(
+
+.align-left {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+}
+
+
+.align-center {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.align-right {
+    margin-right: 0;
+    margin-left: auto;
+    text-align: right;
+}

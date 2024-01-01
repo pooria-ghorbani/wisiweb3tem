@@ -1,0 +1,24 @@
+/*
+ * This file is imported in bootstrap during compilation - see vendor/scss/main
+ */
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/mixins';
+
+
+// DO NOT CHANGE the number of columns!
+$grid-columns: 24;
+
+$primary-font-color: #333333;
+$button-font-color: white;
+
+$color-primary: black;
+$color-secondary: orange;
+
+$theme-colors: (
+    'primary': $color-primary,
+    'danger': $color-secondary,
+);
+
+
+// must be placed at the end
+@import '~bootstrap/scss/variables';

@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+/data
+/backend/static_collected
+/backend/.local-env
+/frontend/node_modules
+/backend/addons-dev
