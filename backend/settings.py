@@ -208,6 +208,7 @@ MIDDLEWARE = [
     'djangocms_redirect.middleware.RedirectMiddleware',
     'link_all.middleware.RedirectExceptionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'allauth.account.middleware.AccountMiddleware',# Docker error collectstatic...
 ]
 
 

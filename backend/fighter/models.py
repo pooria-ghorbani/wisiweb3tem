@@ -343,8 +343,8 @@ class Fighter(models.Model):
         validators=[MinValueValidator(Decimal('0.0')), MaxValueValidator(Decimal('5.0'))],
         default=Decimal('0.0')
     )
-    category = models.ForeignKey(FighterCategory, on_delete=models.CASCADE, null=True)
-    fighter_manager = models.ForeignKey(FighterManager, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(FighterCategory, on_delete=models.CASCADE, blank=True, null=True)
+    fighter_manager = models.ForeignKey(FighterManager, on_delete=models.CASCADE, blank=True, null=True)
     #fighter_placeholder = models.ForeignKey(fighter_placeholder_slotname, on_delete=models.CASCADE, default='fighter')
     
     @property
@@ -355,7 +355,7 @@ class Fighter(models.Model):
         return self.wins * 0.5 - self.losses * 0.3 + self.draws * 0.2
     
     def __str__ (self):
-        return f'{self.id} - {self.fighter_uuids} - {self.name} - {self.ranking_score} - {self.star_rating}'
+        return f'{self.fighters_id} -  {self.name} - {self.ranking_score} '
     
 
 
