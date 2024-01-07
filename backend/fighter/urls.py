@@ -12,7 +12,7 @@ urlpatterns = [
     #re_path(r'^$', Index_view.as_view()),
     #re_path(r'^archive/$', archive_view.as_view()),
     path('', views.fighter_list, name='fighter_list'),
-    path('detail/<str:uuid>', views.fighter_detail, name='fighter_detail'),
+    path('detail/<str:id>', views.fighter_detail, name='fighter_detail'),
     #path('', views.fighter_list, name='fighter_list_plugin'),
     #re_path('detail_selected/<int:id>/', views.fighter_detail, name='detail_selected'),
 

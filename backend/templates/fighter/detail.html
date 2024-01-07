@@ -2,6 +2,9 @@
 {% extends "bootstrap5.html" %}
 
 {% block content %}
-  <h1>{{ fighter.name }}</h1>
-  <p>{{ fighter.details }}</p>
+  <img src="{{ fighter.image.url }}" alt="{{ fighter.name }}">
+  <a href="{% url 'fighter_detail' fighter.id %}">{{ fighter.name }}</a>
+  <p>ID: {{fighter.id}}</p>
+  <p>Country: {{fighter.country}}</p>
+  <p>Titles: {{fighter.titles}}</p>
 {% endblock %}
