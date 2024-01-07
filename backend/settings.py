@@ -477,6 +477,7 @@ CSP_MEDIA_SRC = ("*", "'self'", "https://*.divio-media.org", "data:")
 CMS_TEMPLATES = [
     ('content-full-width.html', 'full width'),
     ('whitenoise-static-files-demo.html', 'Static File Demo'),
+    ('bootstrap5.html', 'bootstrap5'),
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'  # for the iframe-embedded django admin
