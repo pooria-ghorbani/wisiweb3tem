@@ -1,0 +1,49 @@
+from django.http import JsonResponse
+from .models import Fighter
+
+def get_fighters(request):
+    fighters = Fighter.objects.all()  # Retrieve all fighters (you might need to filter based on your requirements)
+    fighter_data = [{'name': fighter.name, 'id': str(fighter.id)} for fighter in fighters]
+    return JsonResponse({'fighters': fighter_data})
+
+
+
+------
+from django.urls import path
+from .views import get_fighters
+
+urlpatterns = [
+    # Other URL patterns
+    path('get_fighters/', get_fighters, name='get_fighters'),
+]
+------
+Use jQuery to Fetch Data:
+In your HTML template, use jQuery to fetch the fighters' data from the Django view:
+<div id="fighters-list"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/get_fighters/',  // URL mapped to the Django view
+            type: 'GET',
+            success: function(response) {
+                var fighters = response.fighters;
+                var fightersList = $('#fighters-list');
+                $.each(fighters, function(index, fighter) {
+                    fightersList.append('<p><a href="/fighters/' + fighter.id + '">' + fighter.name + '</a></p>');
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+------
+This jQuery script fetches the fighter data using AJAX and appends a list of fighters' names with links to their details pages (/fighters/<fighter_id>) in the fighters-list div.
+
+Ensure the URLs and HTML structure align with your project's setup. This is a basic example that you can adapt according to your specific Django CMS structure and the way you want to display fighter data on your website.
+
+
+-------------------------########_-------------------------------

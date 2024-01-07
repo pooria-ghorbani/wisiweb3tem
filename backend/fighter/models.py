@@ -309,8 +309,8 @@ class Fighter(models.Model):
     
     attributes = AttributesField()
     #fighter_placeholder = PlaceholderField('placeholder_fighter')
-    id = models.AutoField(primary_key=True)
-    fighter_uuids = models.UUIDField(default=uuid.uuid4, unique=True),
+    #id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     fighters_id = models.PositiveIntegerField(unique=True,)
     is_active = models.BooleanField(default=True)
     is_crown = models.BooleanField(default=False)
@@ -346,7 +346,15 @@ class Fighter(models.Model):
     category = models.ForeignKey(FighterCategory, on_delete=models.CASCADE, blank=True, null=True)
     fighter_manager = models.ForeignKey(FighterManager, on_delete=models.CASCADE, blank=True, null=True)
     #fighter_placeholder = models.ForeignKey(fighter_placeholder_slotname, on_delete=models.CASCADE, default='fighter')
-    
+    def __str__(self):
+        return self.name
+
+    def get_short_uuid(self, length=7):
+        return str(self.id)[:length]
+
+    def get_absolute_url(self):
+        return reverse('fighter_detail', args=[str(self.get_short_uuid())])  # <a href="{% url 'fighter_detail' fighter.get_short_uuid %}">{{ fighter.name }}</a>
+
     @property
     def ranking_score(self):
         # This is a more complex example that considers multiple factors.
@@ -354,8 +362,8 @@ class Fighter(models.Model):
         # You can adjust these weights based on how important you think each factor is.
         return self.wins * 0.5 - self.losses * 0.3 + self.draws * 0.2
     
-    def __str__ (self):
-        return f'{self.fighters_id} -  {self.name} - {self.ranking_score} '
+    #def __str__ (self):
+    #    return f'{self.fighters_id} -  {self.name} - {self.ranking_score} '
     
 
 
